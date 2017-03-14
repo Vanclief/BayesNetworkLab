@@ -1,2 +1,2 @@
 #!/bin/sh
-ruby bayes.rb
+python3 main.py

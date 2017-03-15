@@ -83,11 +83,7 @@ def get_probabilities(node, sections):
 
     for i in filtered:
         if '|' in i:
-            probs = i.split(',')
-            probs = (list(map(
-                lambda x: x.split('|', 1)[-1], probs
-            )))
-            probs = [elem for elem in probs if '=' in elem]
+            probs = i.split('|', 1)[-1]
             probabilities_list.append(probs)
         else:
             probabilities_list.append(i)

@@ -38,20 +38,37 @@ def parse_input(lines):
 
 # Check if the node has parents
 
-def is_parent(sections):
+
+def parse_nodes(sections):
+    nodes = sections['[Nodes]']
+    for node in nodes[0].split(','):
+        print(get_parents(node, sections))
+
+
+
+
+def get_parents(node, sections):
+    result = list()
     nodes = sections['[Nodes]']
     probabilities = sections['[Probabilities]']
-    for node in nodes[0].split(','):
-        for probability in probabilities:
-            print(node)
-            print(probability)
 
+    print('--' + node + '--')
+    parents = list(
+        filter(lambda x: (x[1:x.find('|')]).count(node) > 0, probabilities))
+
+    if len(parents) > 1:
+        for i in parents:
+            for n in nodes[0].split(','):
+                if n in i and n != node and n not in result:
+                    result.append(n)
+
+    return result
 
 def main():
 
     lines = process_input()
     sections = parse_input(lines)
-    is_parent(sections)
+    parse_nodes(sections)
 
 
 if __name__ == '__main__':

@@ -1,8 +1,14 @@
 import fileinput
 import re
 
-# Import Node Class
-Node = __import__('node')
+# Node Class
+class Node:
+    def __init__(self, parents, probabilities_table):
+        self.parents = parents
+        self.probabilities_table = probabilities_table
+
+    def __repr__(self):
+        return "Node(%s %s)" % (self.parents, self.probabilities_table)
 
 # Serialize Input into lines
 
@@ -39,12 +45,18 @@ def parse_input(lines):
 # Create the nodes for the Bayesian Network
 
 
-def parse_nodes(sections):
+def create_nodes(sections):
+
+    bayesian_network = {}
     nodes = sections['[Nodes]']
     for node in nodes[0].split(','):
-        print('--' + node + '--')
-        get_parents(node, sections)
-        get_probabilities(node, sections)
+        parents = get_parents(node, sections)
+        probabilities = get_probabilities(node, sections)
+        probabilities_table = get_probabilities_table(node, probabilities)
+        bayesian_network[node] = Node(parents, probabilities_table)
+
+    print(bayesian_network)
+    return bayesian_network
 
 # Return a list with the name of the parents of the node
 
@@ -88,15 +100,18 @@ def get_probabilities(node, sections):
         else:
             probabilities_list.append(i)
 
-    print(probabilities_list)
     return probabilities_list
+
+# Return a dictionary with the probabilities table of a node
+def get_probabilities_table(node, probabilities):
+    return probabilities
 
 
 def main():
 
     lines = process_input()
     sections = parse_input(lines)
-    parse_nodes(sections)
+    create_nodes(sections)
 
 
 if __name__ == '__main__':

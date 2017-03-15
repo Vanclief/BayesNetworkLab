@@ -18,9 +18,7 @@ def process_input(lines):
 def parse_input(lines):
     sections = {}
     current_section = None
-    # pattern = re.compile("/\[(?<value>.*)\]/")
     pattern = re.compile(r"\[([A-Za-z0-9_]+)\]")
-    # pattern = re.compile("^([A-Z][0-9]+)+$")
 
     for line in lines[:]:
         section = pattern.match(line)
@@ -63,7 +61,6 @@ def parse_input(lines):
 
     # lines.pop(0)
 
-
 # def input_to_queries():
 
 def main():
@@ -78,6 +75,7 @@ def main():
         '\n').rstrip('\r').replace(' ', ''), lines))
 
     sections = parse_input(lines)
+    print(sections)
 
 
 if __name__ == '__main__':

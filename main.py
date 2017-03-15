@@ -36,33 +36,58 @@ def parse_input(lines):
             sections[current_section].append(line)
     return sections
 
-# Check if the node has parents
+# Create the nodes for the Bayesian Network
 
 
 def parse_nodes(sections):
     nodes = sections['[Nodes]']
     for node in nodes[0].split(','):
-        print(get_parents(node, sections))
+        get_parents(node, sections)
+        get_probabilities(node, sections)
 
-
+# Return a list with the name of the parents of the node
 
 
 def get_parents(node, sections):
-    result = list()
+
     nodes = sections['[Nodes]']
     probabilities = sections['[Probabilities]']
+    parents = list()
 
-    print('--' + node + '--')
-    parents = list(
-        filter(lambda x: (x[1:x.find('|')]).count(node) > 0, probabilities))
+    filtered = list(
+        filter(
+            lambda x: (x[1:x.find('|')]).count(node) > 0, probabilities)
+    )
 
-    if len(parents) > 1:
-        for i in parents:
+    if len(filtered) > 1:
+        for i in filtered:
             for n in nodes[0].split(','):
-                if n in i and n != node and n not in result:
-                    result.append(n)
+                if n in i and n != node and n not in parents:
+                    parents.append(n)
 
-    return result
+    return parents
+
+
+# Returns a list with the probabilities of each node
+
+def get_probabilities(node, sections):
+    nodes = sections['[Nodes]']
+    probabilities = sections['[Probabilities]']
+    parents = list()
+
+    filtered = list(
+        filter(
+            lambda x: (x[1:x.find('|')]).count(node) > 0, probabilities)
+    )
+
+    if len(filtered) > 1:
+        for i in filtered:
+            for n in nodes[0].split(','):
+                if n in i and n != node and n not in parents:
+                    parents.append(n)
+
+    return parents
+
 
 def main():
 

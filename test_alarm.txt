@@ -7,7 +7,7 @@ Burglary, Earthquake, Alarm, JohnCalls, MaryCalls
 [Probabilities]
 +Burglary = 0.001
 +Earthquake = 0.002
-+Alarm|+Earthquake,+Burglary = 0.95
++Alarm|+Earthquake, +Burglary = 0.95
 +Alarm|-Earthquake, +Burglary = 0.94
 +Alarm|+Earthquake, -Burglary = 0.29
 +Alarm|-Earthquake, -Burglary = 0.001

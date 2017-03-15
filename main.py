@@ -36,12 +36,22 @@ def parse_input(lines):
             sections[current_section].append(line)
     return sections
 
+# Check if the node has parents
+
+def is_parent(sections):
+    nodes = sections['[Nodes]']
+    probabilities = sections['[Probabilities]']
+    for node in nodes[0].split(','):
+        for probability in probabilities:
+            print(node)
+            print(probability)
+
 
 def main():
 
     lines = process_input()
     sections = parse_input(lines)
-    print(sections)
+    is_parent(sections)
 
 
 if __name__ == '__main__':

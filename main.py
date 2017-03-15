@@ -27,9 +27,9 @@ def parse_input(lines):
         if section:
             current_section = section.group(0)
             sections[current_section] = []
-        elif current_section:
+        elif current_section and line != '':
             sections[current_section].append(line)
-    print(sections)
+    return sections
 
 # def input_to_nodes(lines):
     # nodes = {}
@@ -76,10 +76,8 @@ def main():
 
     lines = list(map(lambda x: x.strip('').rstrip(
         '\n').rstrip('\r').replace(' ', ''), lines))
-    # lines = process_input(lines)
-    parse_input(lines)
-    # lines, nodes = input_to_nodes(lines)
-    # lines, nodes = input_to_probs(lines, nodes)
+
+    sections = parse_input(lines)
 
 
 if __name__ == '__main__':

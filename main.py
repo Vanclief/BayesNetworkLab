@@ -42,6 +42,7 @@ def parse_input(lines):
 def parse_nodes(sections):
     nodes = sections['[Nodes]']
     for node in nodes[0].split(','):
+        print('--' + node + '--')
         get_parents(node, sections)
         get_probabilities(node, sections)
 
@@ -71,22 +72,28 @@ def get_parents(node, sections):
 # Returns a list with the probabilities of each node
 
 def get_probabilities(node, sections):
+    probabilities_list = list()
     nodes = sections['[Nodes]']
     probabilities = sections['[Probabilities]']
-    parents = list()
 
     filtered = list(
         filter(
             lambda x: (x[1:x.find('|')]).count(node) > 0, probabilities)
     )
 
-    if len(filtered) > 1:
-        for i in filtered:
-            for n in nodes[0].split(','):
-                if n in i and n != node and n not in parents:
-                    parents.append(n)
+    for i in filtered:
+        if '|' in i:
+            probs = i.split(',')
+            probs = (list(map(
+                lambda x: x.split('|', 1)[-1], probs
+            )))
+            probs = [elem for elem in probs if '=' in elem]
+            probabilities_list.append(probs)
+        else:
+            probabilities_list.append(i)
 
-    return parents
+    print(probabilities_list)
+    return probabilities_list
 
 
 def main():

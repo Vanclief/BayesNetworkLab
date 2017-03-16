@@ -52,12 +52,12 @@ def create_nodes(sections):
         bayesian_network[node] = Node(parents, probabilities_table)
 
     # prints Bayesian Network
-    for node in bayesian_network:
-    	print(node)
-    	print(bayesian_network[node].parents)
-    	for prob in bayesian_network[node].probabilities_table:
-    		print(prob, bayesian_network[node].probabilities_table[prob])
-    	print("\n")
+    # for node in bayesian_network:
+    # 	print(node)
+    # 	print(bayesian_network[node].parents)
+    # 	for prob in bayesian_network[node].probabilities_table:
+    # 		print(prob, bayesian_network[node].probabilities_table[prob])
+    # 	print("\n")
     return bayesian_network
 
 
@@ -119,12 +119,30 @@ def get_probabilities_table(node, probabilities):
 		prob_table[false_key] = 1 - prob
 	return prob_table
 
+# Return a list with list of queries, which are dictionaries with "queried" and "given" elements each
+def create_queries(sections):
+	queries_list = []
+	queries = sections['[Queries]']
+	for line in queries:
+		query_elements = []
+		element = []
+		query = line.split('|')
+		for i in query:
+			element = i.split(',')
+			element.sort(key = lambda x: x[1:])
+			query_elements.append(element)
+		queries_list.append(query_elements)
+	for query in queries_list:
+		print(query)
+	return queries_list
+
 
 def main():
 
     lines = process_input()
     sections = parse_input(lines)
     b_n = create_nodes(sections)
+    queries = create_queries(sections)
 
 
 if __name__ == '__main__':

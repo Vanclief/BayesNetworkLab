@@ -5,7 +5,8 @@ import re
 
 
 class Node:
-    def __init__(self, parents, probabilities_table):
+    def __init__(self, name, parents, probabilities_table):
+        self.name = name
         self.parents = parents
         self.probabilities_table = probabilities_table
 
@@ -65,7 +66,7 @@ def create_nodes(sections):
         parents = get_parents(node, sections)
         probabilities = get_probabilities(node, sections)
         probabilities_table = get_probabilities_table(node, probabilities)
-        bayesian_network[node] = Node(parents, probabilities_table)
+        bayesian_network[node] = Node(node, parents, probabilities_table)
 
     return bayesian_network
 
@@ -81,7 +82,6 @@ def print_network(bayesian_network):
                 prob,
                 bayesian_network[node].probabilities_table[prob]
             )
-            print("\n")
 
 # Return a list with the name of the parents of the node
 
@@ -161,12 +161,12 @@ def create_queries(sections):
         queries_list.append(query_elements)
     return queries_list
 
-
 # Process queries and get their probabilities
+
+
 def process_queries(bayesian_network, queries):
     # print_network(bayesian_network)
     for query in queries:
-        print(query)
         if len(query) == 1:
             prob = get_probability_from_node(bayesian_network, query)
             print(prob)
@@ -190,6 +190,7 @@ def filter_query(bayesian_network, query):
     queried = list()
     queried_parents = list()
     given = list()
+    print(query)
 
     for l in left:
         node = bayesian_network[l[1:]]
@@ -201,19 +202,57 @@ def filter_query(bayesian_network, query):
     for r in right:
         given.append(r[1:])
 
+    filtered_query = [i for e in queried_parents for i in given if e in i]
 
-    filtered_query = [i for e in queried_parents for i in given if e not in i]
-
-    print('Debug: Queried')
-    print(queried_parents)
-    print('Debug: Given')
+    print('Debug:')
+    print(queried)
     print(given)
-    print('Debug: Filtered')
     print(filtered_query)
-
 
     # return filtered_query
     return ''
+
+
+# Normalize the probabiity so it adds up 1
+def normalize(distribution):
+    return tuple(x * 1 / (sum(distribution)) for x in distribution)
+
+
+def sort_query():
+    print("TODO")
+
+# Calculate the distribution using enumeration
+
+
+def enumeration_ask(query, evidence):
+    result = []
+    for x in [False, True]:
+        evidence = copy.deepcopy(evidence)
+        evidence[query] = x
+         # variables = sort_query(query) THIS NEEDS TO BE DONE
+        result.append(enumeration_all(variables, evidence))
+    return normalize(result)
+
+
+def enumeration_all(variables, evidence):
+    if len(variables) == 0:
+        return 1.0
+
+    Left = variables[0]
+    if Left in evidence:
+        # probability = parse_query(Left, evidence) * \
+            # enumeration_all.enum_all(variables[1:], evidence)
+        print('This prints')
+    else:
+        probs = []
+        evidence_copy = copy.deepcopy(evidence)
+        for y in [True, False]:
+            evidence_copy[Left] = y
+            probs.append(parse_query(Left, evidence_copy) *
+                         enumeration_all(variables[1:], evidence_copy))
+        probability = sum(probs)
+
+    return probability
 
 
 def main():

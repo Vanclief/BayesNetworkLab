@@ -134,9 +134,9 @@ def get_probabilities_table(node, probabilities):
         given = given.split(",")
         given.sort(key=lambda x: x[1:])
         key = ""
-        if len(given) > 1:
-            for item in given:
-                key += (item)
+        for item in given:
+        	if not item[1:] == node:
+        		key += (item)
         true_key = "+" + node + key
         false_key = "-" + node + key
         prob_table[true_key] = prob
@@ -222,7 +222,8 @@ def main():
     sections = parse_input(lines)
     bayesian_network = create_nodes(sections)
     queries = create_queries(sections)
-    process_queries(bayesian_network, queries)
+    print_network(bayesian_network)
+    # process_queries(bayesian_network, queries)
 
 
 if __name__ == '__main__':

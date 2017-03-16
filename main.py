@@ -11,8 +11,6 @@ class Node:
         return "Node(%s %s)" % (self.parents, self.probabilities_table)
 
 # Serialize Input into lines
-
-
 def process_input():
     lines = []
 
@@ -24,10 +22,9 @@ def process_input():
 
     return lines
 
+
 # Parse the input lines into a dictionary of lists containing Nodes,
 # Probabilities and Queries
-
-
 def parse_input(lines):
     sections = {}
     current_section = None
@@ -42,31 +39,33 @@ def parse_input(lines):
             sections[current_section].append(line)
     return sections
 
+
 # Create the nodes for the Bayesian Network
-
-
 def create_nodes(sections):
-
     bayesian_network = {}
     nodes = sections['[Nodes]']
+
     for node in nodes[0].split(','):
         parents = get_parents(node, sections)
         probabilities = get_probabilities(node, sections)
         probabilities_table = get_probabilities_table(node, probabilities)
         bayesian_network[node] = Node(parents, probabilities_table)
 
-    print(bayesian_network)
+    # prints Bayesian Network
+    for node in bayesian_network:
+    	print(node)
+    	print(bayesian_network[node].parents)
+    	for prob in bayesian_network[node].probabilities_table:
+    		print(prob, bayesian_network[node].probabilities_table[prob])
+    	print("\n")
     return bayesian_network
 
+
 # Return a list with the name of the parents of the node
-
-
 def get_parents(node, sections):
-
     nodes = sections['[Nodes]']
     probabilities = sections['[Probabilities]']
     parents = list()
-
     filtered = list(
         filter(
             lambda x: (x[1:x.find('|')]).count(node) > 0, probabilities)
@@ -82,7 +81,6 @@ def get_parents(node, sections):
 
 
 # Returns a list with the probabilities of each node
-
 def get_probabilities(node, sections):
     probabilities_list = list()
     nodes = sections['[Nodes]']
@@ -102,16 +100,31 @@ def get_probabilities(node, sections):
 
     return probabilities_list
 
+
 # Return a dictionary with the probabilities table of a node
 def get_probabilities_table(node, probabilities):
-    return probabilities
+	prob_table = {}
+	for line in probabilities[:]:
+		given, prob = line.split('=')
+		prob = float(prob)
+		given = given.split(",")
+		given.sort(key = lambda x: x[1:])
+		key = ""
+		if len(given) > 1:
+			for item in given:
+				key += (item)
+		true_key = "+" + node + key
+		false_key = "-" + node + key
+		prob_table[true_key] = prob
+		prob_table[false_key] = 1 - prob
+	return prob_table
 
 
 def main():
 
     lines = process_input()
     sections = parse_input(lines)
-    create_nodes(sections)
+    b_n = create_nodes(sections)
 
 
 if __name__ == '__main__':

@@ -261,8 +261,8 @@ def main():
     sections = parse_input(lines)
     bayesian_network = create_nodes(sections)
     queries = create_queries(sections)
-    print_network(bayesian_network)
-    # process_queries(bayesian_network, queries)
+    # print_network(bayesian_network)
+    process_queries(bayesian_network, queries)
 
 
 if __name__ == '__main__':

@@ -168,16 +168,52 @@ def process_queries(bayesian_network, queries):
     for query in queries:
         print(query)
         if len(query) == 1:
-           prob = get_probability_from_node(bayesian_network, query)
-           print(prob)
+            prob = get_probability_from_node(bayesian_network, query)
+            print(prob)
         else:
-            get_nodes_from_query(query)
+            q = filter_query(bayesian_network, query)
+            print(q)
 
 
 def get_probability_from_node(bayesian_network, query):
     node_name = get_nodes_from_query(query)
     node = bayesian_network[node_name[0]]
     return node.probabilities_table[query[0][0]]
+
+# Remove independent nodes
+
+
+def filter_query(bayesian_network, query):
+    left = query[0]
+    right = query[1]
+
+    queried = list()
+    queried_parents = list()
+    given = list()
+
+    for l in left:
+        node = bayesian_network[l[1:]]
+        queried.append(node)
+        if len(node.parents) > 0:
+            for parent in node.parents:
+                queried_parents.append(parent)
+
+    for r in right:
+        given.append(r[1:])
+
+
+    filtered_query = [i for e in queried_parents for i in given if e not in i]
+
+    print('Debug: Queried')
+    print(queried_parents)
+    print('Debug: Given')
+    print(given)
+    print('Debug: Filtered')
+    print(filtered_query)
+
+
+    # return filtered_query
+    return ''
 
 
 def main():

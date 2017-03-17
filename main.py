@@ -203,8 +203,10 @@ def filter_query(bayesian_network, query):
 
     filtered_query = [i for e in queried_parents for i in given if e in i]
 
-    return filtered_query
-
+    if(len(filtered_query) > 1):
+        return list([left, filtered_query])
+    else:
+        return list([left, right])
 
 # Normalize the probabiity so it adds up 1
 def normalize(distribution):

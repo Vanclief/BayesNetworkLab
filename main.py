@@ -203,7 +203,7 @@ def filter_query(bayesian_network, query):
 
     filtered_query = [i for e in queried_parents for i in given if e in i]
 
-    if(len(filtered_query) > 1):
+    if(len(filtered_query) > 0):
         return list([left, filtered_query])
     else:
         return list([left, right])

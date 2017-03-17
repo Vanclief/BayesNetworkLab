@@ -190,7 +190,6 @@ def filter_query(bayesian_network, query):
     queried = list()
     queried_parents = list()
     given = list()
-    print(query)
 
     for l in left:
         node = bayesian_network[l[1:]]
@@ -204,13 +203,7 @@ def filter_query(bayesian_network, query):
 
     filtered_query = [i for e in queried_parents for i in given if e in i]
 
-    print('Debug:')
-    print(queried)
-    print(given)
-    print(filtered_query)
-
-    # return filtered_query
-    return ''
+    return filtered_query
 
 
 # Normalize the probabiity so it adds up 1

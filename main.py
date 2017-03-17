@@ -223,7 +223,9 @@ def sort_query():
 def enumeration_ask(query, evidence):
     result = []
     for x in ['-', '+']:
+        print('-----------')
         evidence = copy.deepcopy(evidence) # cast this to hash?
+        # Ok this doesn't work
         evidence[query] = x
          # variables = sort_query(query) THIS NEEDS TO BE DONE
         result.append(enumeration_all(variables, evidence))
@@ -237,7 +239,7 @@ def enumeration_all(variables, evidence):
     Left = variables[0]
     if Left in evidence:
         # probability = parse_query(Left, evidence) * \
-            # enumeration_all.enum_all(variables[1:], evidence)
+            # enumeration_all(variables[1:], evidence)
         print('This prints')
     else:
         probs = []

@@ -1,5 +1,5 @@
 import fileinput
-import re
+import re, copy
 
 # Node Class
 
@@ -173,6 +173,7 @@ def process_queries(bayesian_network, queries):
         else:
             q = filter_query(bayesian_network, query)
             print(q)
+            enumeration_ask(q[0], q[1])
 
 
 def get_probability_from_node(bayesian_network, query):
@@ -221,8 +222,8 @@ def sort_query():
 
 def enumeration_ask(query, evidence):
     result = []
-    for x in [False, True]:
-        evidence = copy.deepcopy(evidence)
+    for x in ['-', '+']:
+        evidence = copy.deepcopy(evidence) # cast this to hash?
         evidence[query] = x
          # variables = sort_query(query) THIS NEEDS TO BE DONE
         result.append(enumeration_all(variables, evidence))
